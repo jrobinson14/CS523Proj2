@@ -29,7 +29,7 @@ public class Display {
         }*/
 
 
-        this.frame = new JFrame("Test");
+        this.frame = new JFrame("Day: 0");
         this.panelHolder = new JPanel[size][size];
 
         frame.setLayout(new GridLayout(size,size));
@@ -51,17 +51,21 @@ public class Display {
 
     }
 
-    public void update(){
+    public void update(Cell[][] upArray, int day){
+        //System.out.println("Updating display\nCell 0,0 is:" + upArray[0][0].cellState);
+        //array = myAut.getArray();
         for(int m = 0; m < size; m++) {
             for(int n = 0; n < size; n++) {
-                if (array[m][n].cellState == States.Susceptible){
+                if (array[m][n].cellState == (States.Susceptible)){
                     panelHolder[m][n].setBackground(Color.GREEN);
-                } else if (array[m][n].cellState == States.Infected){
+                } else if (array[m][n].cellState == (States.Infected)){
+                    //System.out.println("Found infected\n");
                     panelHolder[m][n].setBackground(Color.RED);
-                } else if (array[m][n].cellState == States.Recovered) {
+                } else if (array[m][n].cellState == (States.Recovered)) {
                     panelHolder[m][n].setBackground(Color.BLUE);
                 }
             }
         }
+        frame.setTitle("Day: " + Integer.toString(day));
     }
 }
