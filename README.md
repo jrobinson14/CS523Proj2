@@ -9,6 +9,9 @@ CS 523 (Complex Adaptive Systems)
 
 Creates a 2d array of cells and runs simulation
 
+A note on checking infected neighbors in corner cases: since the 
+number of neighbors cannot be >3 for corner cells, infected counter is incremented by one
+
 # Cell
 
 Class for individual cell, stores info of cell and contains methods for cell function
