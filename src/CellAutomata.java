@@ -22,6 +22,7 @@ public class CellAutomata implements Runnable {
         //update GUI
         //pause and wait for user input on certain days in order to observe current state
         //sleep
+
     }
 
     /**
@@ -36,5 +37,12 @@ public class CellAutomata implements Runnable {
                 cellID++;
             }
         }
+    }
+
+    public Cell[][] getArray(){return cellArray;}
+
+    //just for GUI testing
+    public void infect(int x, int y){
+        cellArray[x][y].cellState = States.Infected;
     }
 }
