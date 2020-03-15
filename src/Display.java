@@ -40,7 +40,7 @@ public class Display {
                 panelHolder[m][n].setBorder(BorderFactory.createLineBorder(Color.BLACK));
                 frame.add(panelHolder[m][n]);
                 if (array[m][n].cellState == States.Susceptible){
-                    panelHolder[m][n].setBackground(Color.BLUE);
+                    panelHolder[m][n].setBackground(Color.GREEN);
                 }
             }
         }
