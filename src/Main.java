@@ -1,7 +1,7 @@
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         //testing code
-        CellAutomata testAut = new CellAutomata(25, 3, "Discrete");
+        CellAutomata testAut = new CellAutomata(100, 3, "Discrete");
         Thread automata = new Thread(testAut);
         automata.start();
         /*Display board = new Display(testAut,3);

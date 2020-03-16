@@ -8,7 +8,7 @@ public class Cell {
     public Cell(int id){
         this.ID = id;
         this.cellState = States.Susceptible; //initialized to Susceptible
-        System.out.printf("New Cell %d Created\n", ID);
+        //System.out.printf("New Cell %d Created\n", ID);
     }
 
     public void infect(){
@@ -21,7 +21,7 @@ public class Cell {
             daysInfected++;
         } else{
             nextState = States.Recovered;
-            System.out.printf("Cell %d has recovered\n", ID);
+            //System.out.printf("Cell %d has recovered\n", ID);
         }
     }
 }

@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class CellAutomata implements Runnable {
 
@@ -8,6 +9,7 @@ public class CellAutomata implements Runnable {
     protected Cell[][] cellArray; //stores all cells
     private String simType; //governs if sim is discrete or using probabilities
     Display display;
+    Scanner input = new Scanner(System.in);
 
 
     public CellAutomata(int size, int neighborhood, String type){
@@ -35,14 +37,14 @@ public class CellAutomata implements Runnable {
         int rowVal = rand.nextInt(size-1);
         int colVal = rand.nextInt(size-1);
         cellArray[rowVal][colVal].cellState = States.Infected;
-        //System.out.println("cell aut, cell[0][0] is:" + cellArray[0][0].cellState);
+        System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
         //display = new Display(this, size);
         display.update(cellArray, day);
 
         while(day < 1000) {
-            rowVal = rand.nextInt(size-1);
-            colVal = rand.nextInt(size-1);
-            cellArray[rowVal][colVal].cellState = States.Infected;
+            //rowVal = rand.nextInt(size-1);
+            //colVal = rand.nextInt(size-1);
+            //cellArray[rowVal][colVal].cellState = States.Infected;
 
             //check neighbors for infection
             for (int i = 0; i < size; i++) {
@@ -65,12 +67,22 @@ public class CellAutomata implements Runnable {
             day++;
             display.update(cellArray, day);
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }
 
+            if(day % 25 == 0){
+                System.out.println("Continue Sim? (Y/N)");
+                String ans = input.nextLine();
+                if(ans == "Y" || ans == "y")
+                    System.out.println("Continuing");
+                if(ans == "N" || ans == "n") {
+                    System.out.println("Ending Sim");
+                    System.exit(0);
+                }
+            }
+        }
     }
 
     /**
@@ -104,7 +116,8 @@ public class CellAutomata implements Runnable {
                     sickNeighbors++;
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no top left neighbor here\n", cellArray[i][j].ID);
-                sickNeighbors++; //this is just to balance cells with fewer neighbors (corner neighbors cannot be infected  in discrete sim without this!)
+                if(simType != "Discrete")
+                    sickNeighbors++; //this is just to balance cells with fewer neighbors (corner neighbors cannot be infected  in discrete sim without this!)
             }
             //check top center
             try {
@@ -154,16 +167,18 @@ public class CellAutomata implements Runnable {
                     sickNeighbors++;
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no bottome right neighbor here\n", cellArray[i][j].ID);
+                if(simType != "Discrete")
+                    sickNeighbors++;
             }
 
-            System.out.printf("Cell %d has finished checking, found %d infections\n", cellArray[i][j].ID, sickNeighbors);
+            //System.out.printf("Cell %d has finished checking, found %d infections\n", cellArray[i][j].ID, sickNeighbors);
 
             if (simType.equals("Discrete")) {
-                if (sickNeighbors >= 2 && cellArray[i][j].cellState != States.Infected) {
-                    System.out.printf("Cell %d is now infected\n", cellArray[i][j].ID);
+                if (sickNeighbors >= 1 && cellArray[i][j].cellState != States.Infected) {
+                    //System.out.printf("Cell %d is now infected\n", cellArray[i][j].ID);
                     newState = States.Infected;
-                } else
-                    System.out.printf("Cell %d is ok!\n", cellArray[i][j].ID);
+                } //else
+                    //System.out.printf("Cell %d is ok!\n", cellArray[i][j].ID);
             }
         }
         return newState;

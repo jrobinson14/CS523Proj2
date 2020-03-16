@@ -37,7 +37,7 @@ public class Display {
         for(int m = 0; m < size; m++) {
             for(int n = 0; n < size; n++) {
                 panelHolder[m][n] = new JPanel();
-                panelHolder[m][n].setBorder(BorderFactory.createLineBorder(Color.BLACK)); //TODO: remove in final, dont want borders
+                //panelHolder[m][n].setBorder(BorderFactory.createLineBorder(Color.BLACK)); //TODO: remove in final, dont want borders
                 frame.add(panelHolder[m][n]);
                 if (array[m][n].cellState == States.Susceptible){
                     panelHolder[m][n].setBackground(Color.GREEN);
