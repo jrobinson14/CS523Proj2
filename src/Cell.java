@@ -16,12 +16,16 @@ public class Cell {
         daysInfected = 0;
     }
 
-    public void progressInfection(){
+    public void progressInfectionDeterm(){
         if(daysInfected < 7){
             daysInfected++;
         } else{
             nextState = States.Recovered;
             //System.out.printf("Cell %d has recovered\n", ID);
         }
+    }
+
+    public void progressInfectionProb(){
+
     }
 }
