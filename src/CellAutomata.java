@@ -36,8 +36,15 @@ public class CellAutomata implements Runnable {
         Random rand = new Random();
         int rowVal = rand.nextInt(size-1);
         int colVal = rand.nextInt(size-1);
-        cellArray[rowVal][colVal].cellState = States.Infected;
+        cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
         System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
+
+        //if the sim type is prob., we neeed two viruses running. Infect another cell with virus 2
+        if(simType == "Probabilistic"){
+            rowVal = rand.nextInt(size-1);
+            colVal = rand.nextInt(size-1);
+            cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
+        }
         //display = new Display(this, size);
         display.update(cellArray, day);
 
@@ -56,7 +63,7 @@ public class CellAutomata implements Runnable {
             //update cells
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
-                    if(cellArray[i][j].cellState == States.Infected){
+                    if(cellArray[i][j].cellState == States.Infected || cellArray[i][j].cellState == States.InfectedVirus2){
                         if(simType == "Deterministic") {
                             cellArray[i][j].progressInfectionDeterm(); //use deterministic model if specified, otherwise use probabilistic
                         } else cellArray[i][j].progressInfectionProb();
@@ -115,71 +122,105 @@ public class CellAutomata implements Runnable {
         //check top left
         if(cellArray[i][j].cellState == States.Susceptible) {
             try {
-                if (cellArray[i - 1][j - 1].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i - 1][j - 1].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i - 1][j - 1].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no top left neighbor here\n", cellArray[i][j].ID);
                 if(simType != "Deterministic")
-                    sickNeighbors++; //this is just to balance cells with fewer neighbors (corner neighbors cannot be infected  in discrete sim without this!)
+                    sickNeighborsVirus2++; //this is just to balance cells with fewer neighbors (corner neighbors cannot be infected  in discrete sim without this!)
             }
             //check top center
             try {
-                if (cellArray[i - 1][j].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i - 1][j].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i - 1][j].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 // System.out.printf("Cell %d has no top center neighbor here\n", cellArray[i][j].ID);
             }
             //check top right
             try {
-                if (cellArray[i - 1][j + 1].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i - 1][j + 1].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i - 1][j + 1].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no top right neighbor here\n", cellArray[i][j].ID);
             }
             //check center left
             try {
-                if (cellArray[i][j - 1].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i][j - 1].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i][j - 1].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no center left neighbor here\n", cellArray[i][j].ID);
             }
             //check center right
             try {
-                if (cellArray[i][j + 1].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i][j + 1].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i][j + 1].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no  center right neighbor here\n", cellArray[i][j].ID);
             }
             //check bottom left
             try {
-                if (cellArray[i + 1][j - 1].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i + 1][j - 1].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i + 1][j - 1].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no  bottome left neighbor here\n", cellArray[i][j].ID);
             }
-            //check bottome center
+            //check bottom center
             try {
-                if (cellArray[i + 1][j].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i + 1][j].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i + 1][j].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no  bottom center neighbor here\n", cellArray[i][j].ID);
             }
-            //check bottome right
+            //check bottom right
             try {
-                if (cellArray[i + 1][j + 1].cellState == States.Infected || cellArray[i - 1][j - 1].cellState == States.InfectedVirus2)
+                if (cellArray[i + 1][j + 1].cellState == States.Infected) {
                     sickNeighbors++;
+                }
+                else if (cellArray[i + 1][j + 1].cellState == States.InfectedVirus2) {
+                    sickNeighborsVirus2++;
+                }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no bottome right neighbor here\n", cellArray[i][j].ID);
-                if(simType != "Discrete")
-                    sickNeighbors++;
+                if(simType != "Deterministic")
+                    sickNeighborsVirus2++;
             }
 
             //System.out.printf("Cell %d has finished checking, found %d infections\n", cellArray[i][j].ID, sickNeighbors);
             //for deterministic model: check if neighbor is infected, if true, become infected
-            if (simType.equals("Discrete")) {
+            if (simType.equals("Deterministic")) {
                 if (sickNeighbors >= 1 && cellArray[i][j].cellState != States.Infected ) {
                     //System.out.printf("Cell %d is now infected\n", cellArray[i][j].ID);
                     newState = States.Infected;
+                } else if (sickNeighborsVirus2 >= 1 && cellArray[i][j].cellState != States.InfectedVirus2){
+                    newState = States.InfectedVirus2;
                 }
             }
 

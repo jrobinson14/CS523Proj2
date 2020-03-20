@@ -59,10 +59,13 @@ public class Display {
                 if (array[m][n].cellState == (States.Susceptible)){
                     panelHolder[m][n].setBackground(Color.GREEN);
                 } else if (array[m][n].cellState == (States.Infected)){
-                    //System.out.println("Found infected\n");
                     panelHolder[m][n].setBackground(Color.RED);
                 } else if (array[m][n].cellState == (States.Recovered)) {
                     panelHolder[m][n].setBackground(Color.BLUE);
+                } else if (array[m][n].cellState == (States.InfectedVirus2)) {
+                    panelHolder[m][n].setBackground(Color.ORANGE);
+                } else if (array[m][n].cellState == (States.RecoveredVirus2)){
+                    panelHolder[m][n].setBackground(Color.BLACK);
                 }
             }
         }

@@ -20,12 +20,15 @@ public class Cell {
         if(daysInfected < 7){
             daysInfected++;
         } else{
-            nextState = States.Recovered;
+            if(cellState == States.Infected)
+                nextState = States.Recovered;
+            else if(cellState == States.InfectedVirus2)
+                nextState = States.RecoveredVirus2;
             //System.out.printf("Cell %d has recovered\n", ID);
         }
     }
 
     public void progressInfectionProb(){
-
+        //recover based on fixed probability at each time step
     }
 }
