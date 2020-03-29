@@ -1,13 +1,17 @@
+import java.util.Random;
+
 public class Cell {
 
     public int ID;
     public States cellState;
     public States nextState;
     public int daysInfected;
+    Random rand;
 
     public Cell(int id){
         this.ID = id;
         this.cellState = States.Susceptible; //initialized to Susceptible
+        this.rand = new Random();
         //System.out.printf("New Cell %d Created\n", ID);
     }
 
@@ -28,7 +32,30 @@ public class Cell {
         }
     }
 
+    /**
+     * determine if cell will become infected with virus
+     * @param numInfected number of neighbors infected, determined by CellAutomata
+     */
+    public States infectProb(int numInfected){
+        //TODO maybe adjust probability, currently each infected neighbor adds 5% chance of infection
+        int risk = numInfected * 15; // 5/100 (5% chance)
+        int riskVal = rand.nextInt(100);
+        if(riskVal < risk){
+            System.out.println("cell " + ID + " infected");
+            return States.Infected;
+        } else return States.Susceptible;
+    }
+
+    /**
+     * progress infection with increasing chance of recovery
+     * Recovery chance increases by 2% each day (COVID-19 takes around 2 weeks to recover on avg.)
+     */
     public void progressInfectionProb(){
-        //recover based on fixed probability at each time step
+        int recoveryProb = daysInfected * 2;
+        int recov = rand.nextInt(100);
+        if(recov < recoveryProb){
+            //recover
+            nextState = States.Recovered;
+        } else daysInfected++;
     }
 }

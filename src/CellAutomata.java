@@ -36,15 +36,16 @@ public class CellAutomata implements Runnable {
         Random rand = new Random();
         int rowVal = rand.nextInt(size-1);
         int colVal = rand.nextInt(size-1);
-        cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
+        cellArray[rowVal][colVal].cellState = States.Infected;
         System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
 
+        //TODO activate this in last part of Pt 2
         //if the sim type is prob., we neeed two viruses running. Infect another cell with virus 2
-        if(simType == "Probabilistic"){
+        /*if(simType == "Probabilistic"){
             rowVal = rand.nextInt(size-1);
             colVal = rand.nextInt(size-1);
             cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
-        }
+        }*/
         //display = new Display(this, size);
         display.update(cellArray, day);
 
@@ -186,7 +187,7 @@ public class CellAutomata implements Runnable {
                     sickNeighborsVirus2++;
                 }
             } catch (IndexOutOfBoundsException e) {
-                //System.out.printf("Cell %d has no  bottome left neighbor here\n", cellArray[i][j].ID);
+                //System.out.printf("Cell %d has no  bottom left neighbor here\n", cellArray[i][j].ID);
             }
             //check bottom center
             try {
@@ -208,7 +209,7 @@ public class CellAutomata implements Runnable {
                     sickNeighborsVirus2++;
                 }
             } catch (IndexOutOfBoundsException e) {
-                //System.out.printf("Cell %d has no bottome right neighbor here\n", cellArray[i][j].ID);
+                //System.out.printf("Cell %d has no bottom right neighbor here\n", cellArray[i][j].ID);
                 if(simType != "Deterministic")
                     sickNeighborsVirus2++;
             }
@@ -224,8 +225,12 @@ public class CellAutomata implements Runnable {
                 }
             }
 
-            if(simType.equals("Probabilistic")){
+            else if(simType.equals("Probabilistic")){
                 //choose if infected based on probability
+                if(sickNeighbors > 0) {
+                    //System.out.println("Checking infections");
+                    newState = cellArray[i][j].infectProb(sickNeighbors);
+                }
             }
         }
         return newState;
