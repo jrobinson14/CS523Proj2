@@ -10,6 +10,8 @@ public class CellAutomata implements Runnable {
     private String simType; //governs if sim is discrete or using probabilities
     Display display;
     Scanner input = new Scanner(System.in);
+    int numberInfected = 0;
+    int numberSuscpetable = (size * size) - numberInfected;
 
 
     public CellAutomata(int size, int neighborhood, String type){
@@ -233,6 +235,8 @@ public class CellAutomata implements Runnable {
                 }
             }
         }
+        if(newState == States.Infected)
+            numberInfected++;
         return newState;
     }
 }

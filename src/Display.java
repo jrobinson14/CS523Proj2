@@ -44,8 +44,8 @@ public class Display {
                 }
             }
         }
+        JTextArea counter = new JTextArea("Infected: " + myAut.numberInfected);
         //JScrollPane sp = new JScrollPane(table);
-        //frame.add();
         frame.setSize(500, 500);
         frame.setVisible(true);
 

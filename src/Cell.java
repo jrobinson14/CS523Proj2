@@ -41,7 +41,7 @@ public class Cell {
         int risk = numInfected * 15; // 5/100 (5% chance)
         int riskVal = rand.nextInt(100);
         if(riskVal < risk){
-            System.out.println("cell " + ID + " infected");
+            //System.out.println("cell " + ID + " infected");
             return States.Infected;
         } else return States.Susceptible;
     }
@@ -51,11 +51,17 @@ public class Cell {
      * Recovery chance increases by 2% each day (COVID-19 takes around 2 weeks to recover on avg.)
      */
     public void progressInfectionProb(){
-        int recoveryProb = daysInfected * 2;
-        int recov = rand.nextInt(100);
-        if(recov < recoveryProb){
-            //recover
-            nextState = States.Recovered;
+        int recoveryProb = 0;
+        if(daysInfected >= 5) { //start recovery at infection day 5, around which symptoms start
+            if(daysInfected < 14)
+                recoveryProb = daysInfected * 6; //80% of cases resolve after ~2 weeks
+            else
+                recoveryProb = daysInfected * 3; //Cases taking over 2 weeks (more severe cases) can take up to 6 weeks to resolve
+            int recov = rand.nextInt(100);
+            if (recov < recoveryProb) {
+                //recover
+                nextState = States.Recovered;
+            } else daysInfected++;
         } else daysInfected++;
     }
 }
