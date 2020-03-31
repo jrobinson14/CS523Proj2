@@ -43,11 +43,11 @@ public class CellAutomata implements Runnable {
 
         //TODO activate this in last part of Pt 2
         //if the sim type is prob., we neeed two viruses running. Infect another cell with virus 2
-        /*if(simType == "Probabilistic"){
+        if(simType == "Probabilistic"){
             rowVal = rand.nextInt(size-1);
             colVal = rand.nextInt(size-1);
             cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
-        }*/
+        }
         //display = new Display(this, size);
         display.update(cellArray, day);
 
@@ -69,7 +69,9 @@ public class CellAutomata implements Runnable {
                     if(cellArray[i][j].cellState == States.Infected || cellArray[i][j].cellState == States.InfectedVirus2){
                         if(simType == "Deterministic") {
                             cellArray[i][j].progressInfectionDeterm(); //use deterministic model if specified, otherwise use probabilistic
-                        } else cellArray[i][j].progressInfectionProb();
+                        } else if(cellArray[i][j].cellState == States.Infected){ //progress infection of virus 1
+                            cellArray[i][j].progressInfectionProbV1();
+                        } else cellArray[i][j].progressInfectionProbV2(10); //progress infection of virus 2
                     }
                     cellArray[i][j].cellState = cellArray[i][j].nextState;
                 }
@@ -133,8 +135,8 @@ public class CellAutomata implements Runnable {
                 }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no top left neighbor here\n", cellArray[i][j].ID);
-                if(simType != "Deterministic")
-                    sickNeighborsVirus2++; //this is just to balance cells with fewer neighbors (corner neighbors cannot be infected  in discrete sim without this!)
+                //if(simType != "Deterministic")
+                  //  sickNeighborsVirus2++; //this is just to balance cells with fewer neighbors (corner neighbors cannot be infected  in discrete sim without this!)
             }
             //check top center
             try {
@@ -212,8 +214,8 @@ public class CellAutomata implements Runnable {
                 }
             } catch (IndexOutOfBoundsException e) {
                 //System.out.printf("Cell %d has no bottom right neighbor here\n", cellArray[i][j].ID);
-                if(simType != "Deterministic")
-                    sickNeighborsVirus2++;
+                //if(simType != "Deterministic")
+                  //  sickNeighborsVirus2++;
             }
 
             //System.out.printf("Cell %d has finished checking, found %d infections\n", cellArray[i][j].ID, sickNeighbors);
@@ -229,9 +231,9 @@ public class CellAutomata implements Runnable {
 
             else if(simType.equals("Probabilistic")){
                 //choose if infected based on probability
-                if(sickNeighbors > 0) {
+                if(sickNeighbors > 0 || sickNeighborsVirus2 > 0) {
                     //System.out.println("Checking infections");
-                    newState = cellArray[i][j].infectProb(sickNeighbors);
+                    newState = cellArray[i][j].infectProb(sickNeighbors, sickNeighborsVirus2);
                 }
             }
         }

@@ -7,11 +7,15 @@ public class Cell {
     public States nextState;
     public int daysInfected;
     Random rand;
+    public boolean immuneV1;
+    public boolean immuneV2;
 
     public Cell(int id){
         this.ID = id;
         this.cellState = States.Susceptible; //initialized to Susceptible
         this.rand = new Random();
+        this.immuneV1 = false;
+        this.immuneV2 = false;
         //System.out.printf("New Cell %d Created\n", ID);
     }
 
@@ -36,21 +40,28 @@ public class Cell {
      * determine if cell will become infected with virus
      * @param numInfected number of neighbors infected, determined by CellAutomata
      */
-    public States infectProb(int numInfected){
+    public States infectProb(int numInfected, int numInfectedV2){
         //TODO maybe adjust probability, currently each infected neighbor adds 5% chance of infection
-        int risk = numInfected * 15; // 5/100 (5% chance)
+        int risk = numInfected * 10; // 10/100 (10% chance)
+        int riskV2 = numInfectedV2 * 10;
         int riskVal = rand.nextInt(100);
-        if(riskVal < risk){
-            //System.out.println("cell " + ID + " infected");
+        int riskValV2 = rand.nextInt(100);
+        if(riskVal < risk && riskValV2 < riskV2){ //TODO test this, should trigger if risk of infection for both viruses
+            if(riskVal > riskValV2) //risk for virus 1 higher than virus 2, infected with virus 1
+                return States.Infected;
+            else return States.InfectedVirus2;
+        } else if(riskVal < risk){ //infected with virus 1
             return States.Infected;
+        } else if(riskValV2 < riskV2){ //infected with virus 2
+            return States.InfectedVirus2;
         } else return States.Susceptible;
     }
 
     /**
-     * progress infection with increasing chance of recovery
+     * progress infection with increasing chance of recovery for Virus 1 (based on COVID-19
      * Recovery chance increases by 2% each day (COVID-19 takes around 2 weeks to recover on avg.)
      */
-    public void progressInfectionProb(){
+    public void progressInfectionProbV1(){
         int recoveryProb = 0;
         if(daysInfected >= 5) { //start recovery at infection day 5, around which symptoms start
             if(daysInfected < 14)
@@ -61,7 +72,23 @@ public class Cell {
             if (recov < recoveryProb) {
                 //recover
                 nextState = States.Recovered;
+                immuneV1 = true;
             } else daysInfected++;
+        } else daysInfected++;
+    }
+
+    /**
+     * progress infection with increasing chance of recovery for Virus 2 (novel virus entering environment)
+     * @param probability modifier to how lilkey recovery will be (use to evolve virus 2)
+     */
+    public void progressInfectionProbV2(int probability){
+        int recoveryProb = 0;
+        recoveryProb = daysInfected * probability;
+        int recov = rand.nextInt(100);
+        if (recov < recoveryProb) {
+            //recover
+            nextState = States.RecoveredVirus2;
+            immuneV2 = true;
         } else daysInfected++;
     }
 }
