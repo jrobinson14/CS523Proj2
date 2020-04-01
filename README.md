@@ -5,7 +5,41 @@ CS 523 (Complex Adaptive Systems)
 
 # Part 2: Cellular Automata to model disease spread
 
-# CellAutamata
+# Running Code
+
+User can run Main.java or create their own main method using the following guide: 
+
+Creating a new cellular automata
+
+1) Create a new cell automata usinge the new command:
+
+        CellAutomata auto = new CellAutomata(args);
+        
+2) Args for CellAutomata
+
+    Size: How many cells will be created. If size is 10, a 10x10 grid will be created (100 cells)
+    
+    Note on size: >200 (40,000 cells) will result in a little while for GUI to be created but should run normally
+    
+    Neighborhood: size of the neighborhood for each cell (should just be 9)
+    
+    Type: Probabilistic or Deterministic (must use only either of these 2 exact words, case sensative). Runs the sim in probabilistic mode (infection and recovery based on probability) or deterministic (cells recover and are infected at a determined rate)
+    
+    Virus 2 Infecctiousness: give an int value (0-100) to govern how infectious virus 2 is
+    
+    Virus 2 recovery: give an int value (0-100) to govern how likely recovery from virus 2 is
+    
+3) Create a new thread for the new cell automata:
+
+        Thread newThread = new Thread(auto);
+ 
+4) Start thread:
+
+       newThread.start();
+      
+      
+
+# CellAutomata
 
 Creates a 2d array of cells and runs simulation
 
