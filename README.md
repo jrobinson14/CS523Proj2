@@ -7,6 +7,8 @@ CS 523 (Complex Adaptive Systems)
 
 # Running Code
 
+User can run Main.java or create their own main method using the following guide: 
+
 Creating a new cellular automata
 
 1) Create a new cell automata usinge the new command:
