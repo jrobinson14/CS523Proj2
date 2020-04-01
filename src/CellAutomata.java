@@ -10,15 +10,20 @@ public class CellAutomata implements Runnable {
     private String simType; //governs if sim is discrete or using probabilities
     Display display;
     Scanner input = new Scanner(System.in);
-    int numberInfected = 0;
-    int numberSuscpetable = (size * size) - numberInfected;
+    int numberInfectedV1 = 0;
+    int numberInfectedV2 = 0;
+    int numberSuscpetable = (size * size) - (numberInfectedV1 + numberInfectedV2);
+    int V2infectivity; //how infectious virus 2 is
+    int V2recovery; //how likely recovery from virus 2 is
 
 
-    public CellAutomata(int size, int neighborhood, String type){
+    public CellAutomata(int size, int neighborhood, String type, int infectivty, int recovery){
         this.size = size;
         this.neighborhood = neighborhood;
         this.cellArray = new Cell[size][size];
         this.simType = type;
+        this.V2infectivity = infectivty;
+        this.V2recovery = recovery;
         System.out.println("Running sim in mode: " + simType);
         createAutomata();
         this.display = new Display(this, size);
@@ -71,7 +76,7 @@ public class CellAutomata implements Runnable {
                             cellArray[i][j].progressInfectionDeterm(); //use deterministic model if specified, otherwise use probabilistic
                         } else if(cellArray[i][j].cellState == States.Infected){ //progress infection of virus 1
                             cellArray[i][j].progressInfectionProbV1();
-                        } else cellArray[i][j].progressInfectionProbV2(10); //progress infection of virus 2
+                        } else cellArray[i][j].progressInfectionProbV2(V2recovery); //progress infection of virus 2
                     }
                     cellArray[i][j].cellState = cellArray[i][j].nextState;
                 }
@@ -233,12 +238,14 @@ public class CellAutomata implements Runnable {
                 //choose if infected based on probability
                 if(sickNeighbors > 0 || sickNeighborsVirus2 > 0) {
                     //System.out.println("Checking infections");
-                    newState = cellArray[i][j].infectProb(sickNeighbors, sickNeighborsVirus2);
+                    newState = cellArray[i][j].infectProb(sickNeighbors, sickNeighborsVirus2, V2infectivity);
                 }
             }
         }
         if(newState == States.Infected)
-            numberInfected++;
+            numberInfectedV1++;
+        else if(newState == States.InfectedVirus2)
+            numberInfectedV2++;
         return newState;
     }
 }

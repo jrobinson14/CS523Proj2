@@ -40,10 +40,10 @@ public class Cell {
      * determine if cell will become infected with virus
      * @param numInfected number of neighbors infected, determined by CellAutomata
      */
-    public States infectProb(int numInfected, int numInfectedV2){
+    public States infectProb(int numInfected, int numInfectedV2, int V2infectivity){
         //TODO maybe adjust probability, currently each infected neighbor adds 5% chance of infection
         int risk = numInfected * 10; // 10/100 (10% chance)
-        int riskV2 = numInfectedV2 * 10;
+        int riskV2 = numInfectedV2 * V2infectivity;
         int riskVal = rand.nextInt(100);
         int riskValV2 = rand.nextInt(100);
         if(riskVal < risk && riskValV2 < riskV2){ //TODO test this, should trigger if risk of infection for both viruses

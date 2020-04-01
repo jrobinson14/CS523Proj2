@@ -44,7 +44,7 @@ public class Display {
                 }
             }
         }
-        JTextArea counter = new JTextArea("Infected: " + myAut.numberInfected);
+        //JTextArea counter = new JTextArea("Infected: " + myAut.numberInfected);
         //JScrollPane sp = new JScrollPane(table);
         frame.setSize(500, 500);
         frame.setVisible(true);
@@ -69,6 +69,6 @@ public class Display {
                 }
             }
         }
-        frame.setTitle("Day: " + Integer.toString(day));
+        frame.setTitle("Day: " + Integer.toString(day) + " Infected (V1): " + myAut.numberInfectedV1 + " Infected (V2): " + myAut.numberInfectedV2);
     }
 }
