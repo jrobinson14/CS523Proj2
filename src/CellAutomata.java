@@ -17,18 +17,22 @@ public class CellAutomata implements Runnable {
     int numberSuscpetable = (size * size) - (numberInfectedV1 + numberInfectedV2);
     int V2infectivity; //how infectious virus 2 is
     int V2recovery; //how likely recovery from virus 2 is
+    boolean forGA;
 
 
-    public CellAutomata(int size, int neighborhood, String type, int infectivty, int recovery){
+    public CellAutomata(int size, int neighborhood, String type, int infectivty, int recovery, boolean forGA){
         this.size = size;
         this.neighborhood = neighborhood;
         this.cellArray = new Cell[size][size];
         this.simType = type;
         this.V2infectivity = infectivty;
         this.V2recovery = recovery;
+        this.forGA = forGA;
         System.out.println("Running sim in mode: " + simType);
         createAutomata();
-        this.display = new Display(this, size);
+        if(forGA == false) {
+            this.display = new Display(this, size);
+        }
         //run();
 
     }
@@ -56,7 +60,9 @@ public class CellAutomata implements Runnable {
             cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
         }
         //display = new Display(this, size);
-        display.update(cellArray, day);
+        if(forGA == false) {
+            display.update(cellArray, day);
+        }
 
         while(day < 1000) {
             //rowVal = rand.nextInt(size-1);
@@ -92,27 +98,34 @@ public class CellAutomata implements Runnable {
 
             //update display
             day++;
-            display.update(cellArray, day);
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            if(day % 100 == 0){
-                System.out.printf("Recovered from Virus 1: %d\nRecovered from Virus 2: %d\n", numberRecoveredV1, numberRecoveredV2);
-
-                System.out.println("Continue Sim? (Y/N)");
-                String ans = input.nextLine();
-                if(ans == "Y" || ans == "y") {
-                    System.out.println("Continuing");
+            if(forGA == false) {
+                display.update(cellArray, day);
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-                if(ans == "N" || ans == "n") {
-                    System.out.println("Ending Sim");
-                    System.exit(0);
+
+                if (day % 100 == 0) {
+                    System.out.printf("Recovered from Virus 1: %d\nRecovered from Virus 2: %d\n", numberRecoveredV1, numberRecoveredV2);
+
+                    System.out.println("Continue Sim? (Y/N)");
+                    String ans = input.nextLine();
+                    if (ans == "Y" || ans == "y") {
+                        System.out.println("Continuing");
+                    }
+                    if (ans == "N" || ans == "n") {
+                        System.out.println("Ending Sim");
+                        System.exit(0);
+                    }
                 }
             }
         }
+        System.out.println("Complete, Final Results:");
+        System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
+                "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n", numberInfectedV1,
+                numberInfectedV2, numberRecoveredV1, numberRecoveredV2);
+        System.exit(0);
     }
 
     /**
