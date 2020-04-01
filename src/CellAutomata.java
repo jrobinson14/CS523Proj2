@@ -12,6 +12,8 @@ public class CellAutomata implements Runnable {
     Scanner input = new Scanner(System.in);
     int numberInfectedV1 = 0;
     int numberInfectedV2 = 0;
+    int numberRecoveredV1 = 0;
+    int numberRecoveredV2 = 0;
     int numberSuscpetable = (size * size) - (numberInfectedV1 + numberInfectedV2);
     int V2infectivity; //how infectious virus 2 is
     int V2recovery; //how likely recovery from virus 2 is
@@ -68,7 +70,7 @@ public class CellAutomata implements Runnable {
                 }
             }
 
-            //update cells
+            //update cells, if a cell is infected, progress the infection until recovery. Cell's next state becomes current state
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     if(cellArray[i][j].cellState == States.Infected || cellArray[i][j].cellState == States.InfectedVirus2){
@@ -76,7 +78,13 @@ public class CellAutomata implements Runnable {
                             cellArray[i][j].progressInfectionDeterm(); //use deterministic model if specified, otherwise use probabilistic
                         } else if(cellArray[i][j].cellState == States.Infected){ //progress infection of virus 1
                             cellArray[i][j].progressInfectionProbV1();
-                        } else cellArray[i][j].progressInfectionProbV2(V2recovery); //progress infection of virus 2
+                            if(cellArray[i][j].nextState == States.Recovered)
+                                numberRecoveredV1++;
+                        } else if(cellArray[i][j].cellState == States.InfectedVirus2){
+                            cellArray[i][j].progressInfectionProbV2(V2recovery); //progress infection of virus 2
+                            if(cellArray[i][j].nextState == States.RecoveredVirus2)
+                                numberRecoveredV2++;
+                        }
                     }
                     cellArray[i][j].cellState = cellArray[i][j].nextState;
                 }
@@ -86,16 +94,19 @@ public class CellAutomata implements Runnable {
             day++;
             display.update(cellArray, day);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
-            if(day % 25 == 0){
+            if(day % 100 == 0){
+                System.out.printf("Recovered from Virus 1: %d\nRecovered from Virus 2: %d\n", numberRecoveredV1, numberRecoveredV2);
+
                 System.out.println("Continue Sim? (Y/N)");
                 String ans = input.nextLine();
-                if(ans == "Y" || ans == "y")
+                if(ans == "Y" || ans == "y") {
                     System.out.println("Continuing");
+                }
                 if(ans == "N" || ans == "n") {
                     System.out.println("Ending Sim");
                     System.exit(0);
