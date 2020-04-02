@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,9 +19,10 @@ public class CellAutomata implements Runnable {
     int V2infectivity; //how infectious virus 2 is
     int V2recovery; //how likely recovery from virus 2 is
     boolean forGA;
+    ArrayList<int[]> resultList;
 
 
-    public CellAutomata(int size, int neighborhood, String type, int infectivty, int recovery, boolean forGA){
+    public CellAutomata(int size, int neighborhood, String type, int infectivty, int recovery, boolean forGA, ArrayList<int[]> list){
         this.size = size;
         this.neighborhood = neighborhood;
         this.cellArray = new Cell[size][size];
@@ -29,6 +31,7 @@ public class CellAutomata implements Runnable {
         this.V2recovery = recovery;
         this.forGA = forGA;
         System.out.println("Running sim in mode: " + simType);
+        this.resultList = list;
         createAutomata();
         if(forGA == false) {
             this.display = new Display(this, size);
@@ -63,6 +66,8 @@ public class CellAutomata implements Runnable {
         if(forGA == false) {
             display.update(cellArray, day);
         }
+
+
 
         while(day < 1000) {
             //rowVal = rand.nextInt(size-1);
@@ -101,7 +106,7 @@ public class CellAutomata implements Runnable {
             if(forGA == false) {
                 display.update(cellArray, day);
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -125,7 +130,11 @@ public class CellAutomata implements Runnable {
         System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
                 "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n", numberInfectedV1,
                 numberInfectedV2, numberRecoveredV1, numberRecoveredV2);
-        System.exit(0);
+        if(forGA){ //add results to results list for GA
+            int[] results = {numberInfectedV1, numberInfectedV2, numberRecoveredV1, numberRecoveredV2};
+            resultList.add(results);
+        }
+        //System.exit(0);
     }
 
     /**
@@ -154,7 +163,7 @@ public class CellAutomata implements Runnable {
         int sickNeighborsVirus2 = 0;
         States newState = cellArray[i][j].cellState;
         //check top left
-        if(cellArray[i][j].cellState == States.Susceptible) {
+        if(cellArray[i][j].cellState == States.Susceptible || cellArray[i][j].cellState == States.Recovered || cellArray[i][j].cellState == States.RecoveredVirus2){ //|| cellArray[i][j].cellState == States.Recovered || cellArray[i][j].cellState == States.RecoveredVirus2) {
             try {
                 if (cellArray[i - 1][j - 1].cellState == States.Infected) {
                     sickNeighbors++;
@@ -260,7 +269,7 @@ public class CellAutomata implements Runnable {
 
             else if(simType.equals("Probabilistic")){
                 //choose if infected based on probability
-                if(sickNeighbors > 0 || sickNeighborsVirus2 > 0) {
+                if((sickNeighbors > 0 && cellArray[i][j].immuneV1 == false) || (sickNeighborsVirus2 > 0 && cellArray[i][j].immuneV2 == false)) {
                     //System.out.println("Checking infections");
                     newState = cellArray[i][j].infectProb(sickNeighbors, sickNeighborsVirus2, V2infectivity);
                 }
