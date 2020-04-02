@@ -54,7 +54,7 @@ public class Cell {
             return States.Infected;
         } else if(riskValV2 < riskV2){ //infected with virus 2
             return States.InfectedVirus2;
-        } else return States.Susceptible;
+        } else return cellState;
     }
 
     /**

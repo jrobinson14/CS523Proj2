@@ -4,10 +4,10 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) throws InterruptedException {
         //testing code
-        CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", 10, 5, false, null);
-        Thread automata = new Thread(testAut);
-        automata.start();
-        //runGA(10);
+        //CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", 20, 10, false, null);
+        //Thread automata = new Thread(testAut);
+        //automata.start();
+        runGA(10);
 
 
     }

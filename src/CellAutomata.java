@@ -106,7 +106,7 @@ public class CellAutomata implements Runnable {
             if(forGA == false) {
                 display.update(cellArray, day);
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -128,10 +128,11 @@ public class CellAutomata implements Runnable {
         }
         System.out.println("Complete, Final Results:");
         System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
-                "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n", numberInfectedV1,
-                numberInfectedV2, numberRecoveredV1, numberRecoveredV2);
+                "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n" +
+                        "Difference is: %d\n", numberInfectedV1,
+                numberInfectedV2, numberRecoveredV1, numberRecoveredV2, Math.abs(numberRecoveredV1 - numberRecoveredV2));
         if(forGA){ //add results to results list for GA
-            int[] results = {numberInfectedV1, numberInfectedV2, numberRecoveredV1, numberRecoveredV2};
+            int[] results = {V2recovery, V2infectivity, Math.abs(numberRecoveredV1 - numberRecoveredV2)}; //returns data from sim to main for GA
             resultList.add(results);
         }
         //System.exit(0);
