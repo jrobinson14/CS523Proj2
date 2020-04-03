@@ -30,7 +30,7 @@ public class CellAutomata implements Runnable {
         this.V2infectivity = infectivty;
         this.V2recovery = recovery;
         this.forGA = forGA;
-        System.out.println("Running sim in mode: " + simType);
+        //System.out.println("Running sim in mode: " + simType);
         this.resultList = list;
         createAutomata();
         if(forGA == false) {
@@ -48,12 +48,12 @@ public class CellAutomata implements Runnable {
         //update GUI
         //pause and wait for user input on certain days in order to observe current state
         //sleep
-        System.out.println("Starting Sim");
+        //System.out.println("Starting Sim");
         Random rand = new Random();
         int rowVal = rand.nextInt(size-1);
         int colVal = rand.nextInt(size-1);
         cellArray[rowVal][colVal].cellState = States.Infected;
-        System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
+        //System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
 
         //TODO activate this in last part of Pt 2
         //if the sim type is prob., we neeed two viruses running. Infect another cell with virus 2
@@ -126,13 +126,15 @@ public class CellAutomata implements Runnable {
                 }
             }
         }
-        System.out.println("Complete, Final Results:");
-        System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
-                "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n" +
-                        "Difference is: %d\n", numberInfectedV1,
-                numberInfectedV2, numberRecoveredV1, numberRecoveredV2, Math.abs(numberRecoveredV1 - numberRecoveredV2));
+        if(forGA == false) {
+            System.out.println("Complete, Final Results:");
+            System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
+                            "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n" +
+                            "Difference is: %d\n", numberInfectedV1,
+                    numberInfectedV2, numberRecoveredV1, numberRecoveredV2, Math.abs(numberRecoveredV1 - numberRecoveredV2));
+        }
         if(forGA){ //add results to results list for GA
-            int[] results = {V2recovery, V2infectivity, Math.abs(numberRecoveredV1 - numberRecoveredV2)}; //returns data from sim to main for GA
+            int[] results = {V2infectivity, V2recovery, Math.abs(numberRecoveredV1 - numberRecoveredV2)}; //returns data from sim to main for GA
             resultList.add(results);
         }
         //System.exit(0);
