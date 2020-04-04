@@ -3,18 +3,62 @@ import java.util.*;
 public class Main {
 
     public static void main(String[] args) throws InterruptedException {
+        Scanner input = new Scanner(System.in);
+        System.out.println("Novel Coronavirus Simulation\nPlease enter '1' for Deterministic Ruleset and '2' for " +
+                        "Probabilistic Ruleset");
+        System.out.println("Or enter '3' to run Genetic Algorithm");
+        String response = input.nextLine();
+        if(response.equals("1")){
+            //run determinstic sim
+            System.out.println("Running sim in deterministic mode (loading GUI)");
+            CellAutomata determ = new CellAutomata(200, 3, "Deterministic",
+                    0, 0, false, null);
+            Thread newThread = new Thread(determ);
+            newThread.start();
+        } else if(response.equals("2")){
+            System.out.println("Enable Virus 2? (y/n)");
+            String ans = input.nextLine();
+            if(ans.equals("Y") || ans.equals("y")){
+                System.out.println("Enter a value 1-100 for how infectious Virus 2 should be");
+                ans = input.nextLine();
+                int infectiousness = Integer.parseInt(ans);
+                System.out.println(("Enter a value 1-100 for the rate of recovery (1 is slow, 100 is fast)"));
+                ans = input.nextLine();
+                int recovery = Integer.parseInt(ans);
+                System.out.println("Starting probabilistic sim with Virus 2 (loading GUI");
+                CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", infectiousness, recovery,
+                        false, null);
+                Thread automata = new Thread(testAut);
+                automata.start();
+            } else if(ans.equals("N") || ans.equals("n")){
+                System.out.println("Starting probabilistic sim (just novel coronavirus) (loading GUI)");
+                CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", 0, 0,
+                        false, null);
+                Thread automata = new Thread(testAut);
+                automata.start();
+            }
+        } else if(response.equals("3")){
+            System.out.println("Running Genetic algorithm, pleas allow a few minutes for GA to complete...");
+            int[] results = runGA(20);
+            System.out.printf("Results:\n Ideal infectiousness found: %d\n, Ideal recovery rate found: %d\n", results[0], results[1]);
+            //run automata with results of GA
+            CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", results[0], results[1],
+                    false, null);
+            Thread automata = new Thread(testAut);
+            automata.start();
+        }
         //testing code
         //CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", 20, 10, false, null);
         //Thread automata = new Thread(testAut);
         //automata.start();
         //run GA
-        int[] results = runGA(20);
+        /*int[] results = runGA(20);
         System.out.printf("Results: %d, %d\n", results[0], results[1]);
         //run automata with results of GA
         CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", results[0], results[1],
                 false, null);
         Thread automata = new Thread(testAut);
-        automata.start();
+        automata.start();*/
 
 
     }

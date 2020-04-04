@@ -28,10 +28,14 @@ public class Cell {
         if(daysInfected < 7){
             daysInfected++;
         } else{
-            if(cellState == States.Infected)
+            if(cellState == States.Infected) {
                 nextState = States.Recovered;
-            else if(cellState == States.InfectedVirus2)
+                immuneV1 = true;
+            }
+            else if(cellState == States.InfectedVirus2) {
                 nextState = States.RecoveredVirus2;
+                immuneV2 = true;
+            }
             //System.out.printf("Cell %d has recovered\n", ID);
         }
     }

@@ -56,7 +56,7 @@ public class CellAutomata implements Runnable {
         //System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
 
         //TODO activate this in last part of Pt 2
-        //if the sim type is prob., we neeed two viruses running. Infect another cell with virus 2
+        //if the sim type is prob., we need two viruses running. Infect another cell with virus 2
         if(simType == "Probabilistic"){
             rowVal = rand.nextInt(size-1);
             colVal = rand.nextInt(size-1);
@@ -116,10 +116,10 @@ public class CellAutomata implements Runnable {
 
                     System.out.println("Continue Sim? (Y/N)");
                     String ans = input.nextLine();
-                    if (ans == "Y" || ans == "y") {
+                    if (ans.equals("Y") || ans.equals("y")) {
                         System.out.println("Continuing");
                     }
-                    if (ans == "N" || ans == "n") {
+                    if (ans.equals("N") || ans.equals("n")) {
                         System.out.println("Ending Sim");
                         System.exit(0);
                     }
@@ -166,7 +166,10 @@ public class CellAutomata implements Runnable {
         int sickNeighborsVirus2 = 0;
         States newState = cellArray[i][j].cellState;
         //check top left
-        if(cellArray[i][j].cellState == States.Susceptible || cellArray[i][j].cellState == States.Recovered || cellArray[i][j].cellState == States.RecoveredVirus2){ //|| cellArray[i][j].cellState == States.Recovered || cellArray[i][j].cellState == States.RecoveredVirus2) {
+        if((cellArray[i][j].cellState == States.Susceptible && simType == "Deterministic") ||
+                (simType == "Probabilistic" && (cellArray[i][j].cellState == States.Susceptible ||
+                                                cellArray[i][j].cellState == States.Recovered ||
+                                                cellArray[i][j].cellState == States.RecoveredVirus2))){ //|| cellArray[i][j].cellState == States.Recovered || cellArray[i][j].cellState == States.RecoveredVirus2) {
             try {
                 if (cellArray[i - 1][j - 1].cellState == States.Infected) {
                     sickNeighbors++;
