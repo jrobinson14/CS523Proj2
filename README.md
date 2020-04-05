@@ -7,7 +7,7 @@ CS 523 (Complex Adaptive Systems)
 
 # Running Code
 
-User can run Main.java or create their own main method using the following guide: 
+User can run Main.java. Running Main.java will give the user some options in what kind of simulation they would like to run. Users can also create their own main method using the following guide: 
 
 Creating a new cellular automata
 
@@ -28,6 +28,10 @@ Creating a new cellular automata
     Virus 2 Infecctiousness: give an int value (0-100) to govern how infectious virus 2 is
     
     Virus 2 recovery: give an int value (0-100) to govern how likely recovery from virus 2 is
+    
+    forGA: this should be set to false for a single simulation. Only set to ttrue if you want to run the genetic algorithm
+    
+    list: this is where results of each autonama are stored. If you are running a single simulation, this can be set to null. If you are running a GA, give this an empty int[] array.  
     
 3) Create a new thread for the new cell automata:
 
