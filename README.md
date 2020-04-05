@@ -57,3 +57,7 @@ Class for individual cell, stores info of cell and contains methods for cell fun
 # Display
 
 Creates a simple display for the simulation using Java Swing tools. Contains a method to update the display with current information about the cellular automata. 
+
+# States
+
+Just an enum of different states each cell can be in, correspsonding states of an SIR model. 
