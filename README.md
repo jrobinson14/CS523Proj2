@@ -53,3 +53,7 @@ number of neighbors cannot be >3 for corner cells, infected counter is increment
 # Cell
 
 Class for individual cell, stores info of cell and contains methods for cell function
+
+# Display
+
+Creates a simple display for the simulation using Java Swing tools. Contains a method to update the display with current information about the cellular automata. 
