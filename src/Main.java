@@ -39,7 +39,7 @@ public class Main {
             }
         } else if(response.equals("3")){
             System.out.println("Running Genetic algorithm, pleas allow a few minutes for GA to complete...");
-            int[] results = runGA(20);
+            int[] results = runGA(40);
             System.out.printf("Results:\n Ideal infectiousness found: %d\n, Ideal recovery rate found: %d\n", results[0], results[1]);
             //run automata with results of GA
             CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", results[0], results[1],
@@ -84,14 +84,14 @@ public class Main {
         //run automata
         //TODO run a single automata, store the infect and recover values along with results in list, move to next automata
         // and do same then compare results of all to get next gen
-        for(int x = 0; x < 5; x++) {
+        for(int x = 0; x < 10; x++) {
             for (CellAutomata a : autoList) {
                 Thread runThread = new Thread(a);
                 runThread.run();
                 System.out.println("Completed a run");
             }
 
-            System.out.println("completed running all automata");
+            //System.out.println("completed running all automata");
             //sort results list, code adapted from https://stackoverflow.com/questions/19596950/sort-an-arraylist-of-integer-arrays
             Collections.sort(results, new Comparator<int[]>() {
                 private static final int INDEX = 2;
@@ -153,6 +153,7 @@ public class Main {
             }
             results.clear();
             System.out.println(autoList.get(1).V2infectivity);
+            System.out.printf("Completed loop: %d\n", x);
         }
         return new int[]{autoList.get(0).V2infectivity, autoList.get(1).V2recovery};
     }

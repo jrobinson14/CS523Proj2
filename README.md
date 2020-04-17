@@ -1,5 +1,11 @@
 # CS523Proj2
 
+
+# Updates
+
+4/17 12:36 PM: Added MovingCells.java
+
+
 Jonathan Robinson and Jarret Jones
 CS 523 (Complex Adaptive Systems)
 
@@ -53,6 +59,10 @@ number of neighbors cannot be >3 for corner cells, infected counter is increment
 # Cell
 
 Class for individual cell, stores info of cell and contains methods for cell function
+
+# MovingCells
+
+Testing class to run a simulation where cells move within a specified area.
 
 # Display
 
