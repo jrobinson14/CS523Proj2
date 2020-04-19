@@ -67,6 +67,9 @@ public class Display {
                 } else if (array[m][n].cellState == (States.RecoveredVirus2)){
                     panelHolder[m][n].setBackground(Color.BLACK);
                 }
+                if(array[m][n].isolating == true){
+                    panelHolder[m][n].setBackground(Color.ORANGE);
+                }
             }
         }
         frame.setTitle("Day: " + Integer.toString(day) + " Infected (V1): " + myAut.numberInfectedV1 + " Infected (V2): " + myAut.numberInfectedV2);

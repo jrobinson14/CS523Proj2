@@ -9,6 +9,7 @@ public class Cell {
     Random rand;
     public boolean immuneV1;
     public boolean immuneV2;
+    public boolean isolating;
 
     public Cell(int id){
         this.ID = id;
@@ -16,6 +17,7 @@ public class Cell {
         this.rand = new Random();
         this.immuneV1 = false;
         this.immuneV2 = false;
+        this.isolating = false;
         //System.out.printf("New Cell %d Created\n", ID);
     }
 
@@ -35,6 +37,7 @@ public class Cell {
             else if(cellState == States.InfectedVirus2) {
                 nextState = States.RecoveredVirus2;
                 immuneV2 = true;
+                isolating = false;
             }
             //System.out.printf("Cell %d has recovered\n", ID);
         }
@@ -67,6 +70,15 @@ public class Cell {
      */
     public void progressInfectionProbV1(){
         int recoveryProb = 0;
+        //TODO work on this isolation probability
+        //if not isolating already, maybe isolate
+        if(!isolating) {
+            int isolationProb = rand.nextInt(100) * daysInfected;
+            if (isolationProb > 25)
+                isolating = true;
+        }
+
+        //progress the infection probabilistically
         if(daysInfected >= 5) { //start recovery at infection day 5, around which symptoms start
             if(daysInfected < 14)
                 recoveryProb = daysInfected * 6; //80% of cases resolve after ~2 weeks
@@ -77,6 +89,7 @@ public class Cell {
                 //recover
                 nextState = States.Recovered;
                 immuneV1 = true;
+                isolating = false;
             } else daysInfected++;
         } else daysInfected++;
     }

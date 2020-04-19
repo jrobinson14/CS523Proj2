@@ -171,7 +171,7 @@ public class CellAutomata implements Runnable {
                                                 cellArray[i][j].cellState == States.Recovered ||
                                                 cellArray[i][j].cellState == States.RecoveredVirus2))){ //|| cellArray[i][j].cellState == States.Recovered || cellArray[i][j].cellState == States.RecoveredVirus2) {
             try {
-                if (cellArray[i - 1][j - 1].cellState == States.Infected) {
+                if (cellArray[i - 1][j - 1].cellState == States.Infected && cellArray[i - 1][j - 1].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i - 1][j - 1].cellState == States.InfectedVirus2) {
@@ -184,7 +184,7 @@ public class CellAutomata implements Runnable {
             }
             //check top center
             try {
-                if (cellArray[i - 1][j].cellState == States.Infected) {
+                if (cellArray[i - 1][j].cellState == States.Infected && cellArray[i - 1][j].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i - 1][j].cellState == States.InfectedVirus2) {
@@ -195,7 +195,7 @@ public class CellAutomata implements Runnable {
             }
             //check top right
             try {
-                if (cellArray[i - 1][j + 1].cellState == States.Infected) {
+                if (cellArray[i - 1][j + 1].cellState == States.Infected && cellArray[i - 1][j + 1].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i - 1][j + 1].cellState == States.InfectedVirus2) {
@@ -206,7 +206,7 @@ public class CellAutomata implements Runnable {
             }
             //check center left
             try {
-                if (cellArray[i][j - 1].cellState == States.Infected) {
+                if (cellArray[i][j - 1].cellState == States.Infected && cellArray[i][j - 1].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i][j - 1].cellState == States.InfectedVirus2) {
@@ -217,7 +217,7 @@ public class CellAutomata implements Runnable {
             }
             //check center right
             try {
-                if (cellArray[i][j + 1].cellState == States.Infected) {
+                if (cellArray[i][j + 1].cellState == States.Infected && cellArray[i][j + 1].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i][j + 1].cellState == States.InfectedVirus2) {
@@ -228,7 +228,7 @@ public class CellAutomata implements Runnable {
             }
             //check bottom left
             try {
-                if (cellArray[i + 1][j - 1].cellState == States.Infected) {
+                if (cellArray[i + 1][j - 1].cellState == States.Infected && cellArray[i + 1][j - 1].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i + 1][j - 1].cellState == States.InfectedVirus2) {
@@ -239,7 +239,7 @@ public class CellAutomata implements Runnable {
             }
             //check bottom center
             try {
-                if (cellArray[i + 1][j].cellState == States.Infected) {
+                if (cellArray[i + 1][j].cellState == States.Infected && cellArray[i - 1][j].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i + 1][j].cellState == States.InfectedVirus2) {
@@ -250,7 +250,7 @@ public class CellAutomata implements Runnable {
             }
             //check bottom right
             try {
-                if (cellArray[i + 1][j + 1].cellState == States.Infected) {
+                if (cellArray[i + 1][j + 1].cellState == States.Infected && cellArray[i + 1][j + 1].isolating == false) {
                     sickNeighbors++;
                 }
                 else if (cellArray[i + 1][j + 1].cellState == States.InfectedVirus2) {
