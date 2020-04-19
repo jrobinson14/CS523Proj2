@@ -1,13 +1,14 @@
 # CS523Proj2
 
+Jonathan Robinson and Jarret Jones
+CS 523 (Complex Adaptive Systems)
 
 # Updates
 
 4/17 12:36 PM: Added MovingCells.java
 
+4/19 10:54 AM: Added ability for cells to isolate based on probability (see Cell.java)
 
-Jonathan Robinson and Jarret Jones
-CS 523 (Complex Adaptive Systems)
 
 # Part 2: Cellular Automata to model disease spread
 
