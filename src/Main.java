@@ -12,7 +12,7 @@ public class Main {
             //run determinstic sim
             System.out.println("Running sim in deterministic mode (loading GUI)");
             CellAutomata determ = new CellAutomata(200, 3, "Deterministic",
-                    0, 0, false, null);
+                    0, 0, false, null, true);
             Thread newThread = new Thread(determ);
             newThread.start();
         } else if(response.equals("2")){
@@ -27,13 +27,13 @@ public class Main {
                 int recovery = Integer.parseInt(ans);
                 System.out.println("Starting probabilistic sim with Virus 2 (loading GUI");
                 CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", infectiousness, recovery,
-                        false, null);
+                        false, null, true);
                 Thread automata = new Thread(testAut);
                 automata.start();
             } else if(ans.equals("N") || ans.equals("n")){
                 System.out.println("Starting probabilistic sim (just novel coronavirus) (loading GUI)");
                 CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", 0, 0,
-                        false, null);
+                        false, null, true);
                 Thread automata = new Thread(testAut);
                 automata.start();
             }
@@ -43,7 +43,7 @@ public class Main {
             System.out.printf("Results:\n Ideal infectiousness found: %d\n, Ideal recovery rate found: %d\n", results[0], results[1]);
             //run automata with results of GA
             CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", results[0], results[1],
-                    false, null);
+                    false, null, true);
             Thread automata = new Thread(testAut);
             automata.start();
         }
@@ -77,7 +77,7 @@ public class Main {
         for(int x = 0; x < size; x++){
             int infectiousness = rand.nextInt(100);
             int recovery = rand.nextInt(100);
-            CellAutomata newAut = new CellAutomata(200, 9, "Probabilistic", infectiousness, recovery, true, results);
+            CellAutomata newAut = new CellAutomata(200, 9, "Probabilistic", infectiousness, recovery, true, results, true);
             autoList.add(newAut);
         }
 
@@ -148,7 +148,7 @@ public class Main {
             autoList.clear();
             for (int i = 0; i < results.size(); i++) {
                 CellAutomata newAut = new CellAutomata(200, 9, "Probabilistic",
-                        results.get(i)[0], results.get(i)[1], true, results);
+                        results.get(i)[0], results.get(i)[1], true, results, true);
                 autoList.add(newAut);
             }
             results.clear();

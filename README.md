@@ -9,6 +9,8 @@ CS 523 (Complex Adaptive Systems)
 
 4/19 10:54 AM: Added ability for cells to isolate based on probability (see Cell.java)
 
+05/4 11:47 AM: Added cell movement to cell automata class. Added tracking of number
+of infected and susceptible cells
 
 # Part 2: Cellular Automata to model disease spread
 

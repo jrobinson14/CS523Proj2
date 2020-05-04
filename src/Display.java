@@ -1,6 +1,4 @@
 import javax.swing.*;
-import javax.swing.plaf.BorderUIResource;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class Display {
@@ -72,6 +70,6 @@ public class Display {
                 }
             }
         }
-        frame.setTitle("Day: " + Integer.toString(day) + " Infected (V1): " + myAut.numberInfectedV1 + " Infected (V2): " + myAut.numberInfectedV2);
+        frame.setTitle("Day: " + Integer.toString(day) + " Infected: " + myAut.numberInfectedV1 + " Susceptible: " + myAut.numberSusceptible);
     }
 }

@@ -10,14 +10,16 @@ public class Cell {
     public boolean immuneV1;
     public boolean immuneV2;
     public boolean isolating;
+    public CellAutomata myAut;
 
-    public Cell(int id){
+    public Cell(int id, CellAutomata aut){
         this.ID = id;
         this.cellState = States.Susceptible; //initialized to Susceptible
         this.rand = new Random();
         this.immuneV1 = false;
         this.immuneV2 = false;
         this.isolating = false;
+        this.myAut = aut;
         //System.out.printf("New Cell %d Created\n", ID);
     }
 
@@ -54,10 +56,15 @@ public class Cell {
         int riskVal = rand.nextInt(100);
         int riskValV2 = rand.nextInt(100);
         if(riskVal < risk && riskValV2 < riskV2){ //TODO test this, should trigger if risk of infection for both viruses
-            if(riskVal > riskValV2) //risk for virus 1 higher than virus 2, infected with virus 1
+            if(riskVal > riskValV2) { //risk for virus 1 higher than virus 2, infected with virus 1
+                myAut.numberInfectedV1++;
+                myAut.numberSusceptible--;
                 return States.Infected;
+            }
             else return States.InfectedVirus2;
         } else if(riskVal < risk){ //infected with virus 1
+            myAut.numberInfectedV1++;
+            myAut.numberSusceptible--;
             return States.Infected;
         } else if(riskValV2 < riskV2){ //infected with virus 2
             return States.InfectedVirus2;
@@ -74,7 +81,7 @@ public class Cell {
         //if not isolating already, maybe isolate
         if(!isolating) {
             int isolationProb = rand.nextInt(100) * daysInfected;
-            if (isolationProb > 25)
+            if (isolationProb > 25) //TODO this is the probability
                 isolating = true;
         }
 
@@ -89,6 +96,7 @@ public class Cell {
                 //recover
                 nextState = States.Recovered;
                 immuneV1 = true;
+                myAut.numberInfectedV1--;
                 isolating = false;
             } else daysInfected++;
         } else daysInfected++;

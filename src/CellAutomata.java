@@ -15,14 +15,16 @@ public class CellAutomata implements Runnable {
     int numberInfectedV2 = 0;
     int numberRecoveredV1 = 0;
     int numberRecoveredV2 = 0;
-    int numberSuscpetable = (size * size) - (numberInfectedV1 + numberInfectedV2);
+    int numberSusceptible; // + numberInfectedV2);
     int V2infectivity; //how infectious virus 2 is
     int V2recovery; //how likely recovery from virus 2 is
     boolean forGA;
+    boolean startInfection; //start a CA with no infections
     ArrayList<int[]> resultList;
 
 
-    public CellAutomata(int size, int neighborhood, String type, int infectivty, int recovery, boolean forGA, ArrayList<int[]> list){
+    public CellAutomata(int size, int neighborhood, String type, int infectivty,
+                        int recovery, boolean forGA, ArrayList<int[]> list, boolean infected){
         this.size = size;
         this.neighborhood = neighborhood;
         this.cellArray = new Cell[size][size];
@@ -32,6 +34,8 @@ public class CellAutomata implements Runnable {
         this.forGA = forGA;
         //System.out.println("Running sim in mode: " + simType);
         this.resultList = list;
+        this.startInfection = infected;
+        this.numberSusceptible = size * size;
         createAutomata();
         if(forGA == false) {
             this.display = new Display(this, size);
@@ -49,19 +53,21 @@ public class CellAutomata implements Runnable {
         //pause and wait for user input on certain days in order to observe current state
         //sleep
         //System.out.println("Starting Sim");
-        Random rand = new Random();
-        int rowVal = rand.nextInt(size-1);
-        int colVal = rand.nextInt(size-1);
-        cellArray[rowVal][colVal].cellState = States.Infected;
-        //System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
+        if(startInfection) {
+            Random rand = new Random();
+            int rowVal = rand.nextInt(size - 1);
+            int colVal = rand.nextInt(size - 1);
+            cellArray[rowVal][colVal].cellState = States.Infected;
+            //System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
+        }
 
-        //TODO activate this in last part of Pt 2
+        /*TODO activate this for adding additional virus
         //if the sim type is prob., we need two viruses running. Infect another cell with virus 2
         if(simType == "Probabilistic"){
             rowVal = rand.nextInt(size-1);
             colVal = rand.nextInt(size-1);
             cellArray[rowVal][colVal].cellState = States.InfectedVirus2;
-        }
+        }*/
         //display = new Display(this, size);
         if(forGA == false) {
             display.update(cellArray, day);
@@ -125,6 +131,7 @@ public class CellAutomata implements Runnable {
                     }
                 }
             }
+            //moveCells();
         }
         if(forGA == false) {
             System.out.println("Complete, Final Results:");
@@ -148,7 +155,7 @@ public class CellAutomata implements Runnable {
         int cellID = 0;
         for(Cell[] cellRow: cellArray){
             for(int i = 0; i < cellRow.length; i++){
-                cellRow[i] = new Cell(cellID);
+                cellRow[i] = new Cell(cellID, this);
                 cellID++;
             }
         }
@@ -282,9 +289,29 @@ public class CellAutomata implements Runnable {
             }
         }
         if(newState == States.Infected)
-            numberInfectedV1++;
+            numberInfectedV1 = numberRecoveredV1;
         else if(newState == States.InfectedVirus2)
             numberInfectedV2++;
         return newState;
+    }
+
+    private void moveCells(){
+        Random rand = new Random();
+        for(int i = 0; i < 25; i++){ // move 25 ranom cells within a local area
+            int x1 = rand.nextInt(199);
+            int y1 = rand.nextInt(199);
+            int x2 = rand.nextInt(20) + (x1 - 10);
+            int y2 = rand.nextInt(20) + (y1 - 10);
+            while(x2 > 199 || x2 < 0){
+                x2 = rand.nextInt(20) + (x1 - 10);
+            }
+            while(y2 > 199 || y2 < 0){
+                y2 = rand.nextInt(20) + (y1 - 10);
+            }
+            Cell tempCell = cellArray[x1][y1];
+            cellArray[x1][y1] = cellArray[x2][y2];
+            cellArray[x2][y2] = tempCell;
+
+        }
     }
 }

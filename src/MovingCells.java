@@ -11,7 +11,7 @@ public class MovingCells {
     public static void main(String[] args) throws InterruptedException {
         Random rand = new Random();
         CellAutomata testAut = new CellAutomata(200, 9, "Probabilistic", 0, 0,
-                false, null);
+                false, null, true);
         Thread automata = new Thread(testAut);
         automata.start();
         while(true) {
