@@ -73,7 +73,21 @@ public class CellAutomata implements Runnable {
             display.update(cellArray, day);
         }
 
-
+        //for recording purposes, comment out if not recording simulation
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Start Sim? (Y/N)");
+        String in = input.nextLine();
+        if (in.equals("Y") || in.equals("y")) {
+            System.out.println("Continuing");
+        }
+        if (in.equals("N") || in.equals("n")) {
+            System.out.println("Ending Sim");
+            System.exit(0);
+        }
 
         while(day < 1000) {
             //rowVal = rand.nextInt(size-1);
@@ -117,7 +131,7 @@ public class CellAutomata implements Runnable {
                     e.printStackTrace();
                 }
 
-                if (day % 100 == 0) {
+                /*if (day % 100 == 0) {
                     System.out.printf("Recovered from Virus 1: %d\nRecovered from Virus 2: %d\n", numberRecoveredV1, numberRecoveredV2);
 
                     System.out.println("Continue Sim? (Y/N)");
@@ -129,7 +143,7 @@ public class CellAutomata implements Runnable {
                         System.out.println("Ending Sim");
                         System.exit(0);
                     }
-                }
+                }*/
             }
             //moveCells();
         }
