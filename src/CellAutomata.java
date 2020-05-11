@@ -21,10 +21,13 @@ public class CellAutomata implements Runnable {
     boolean forGA;
     boolean startInfection; //start a CA with no infections
     ArrayList<int[]> resultList;
+    int[] infectedNumbers = new int[1000]; //stores number of infected each day for graphing
+
 
 
     public CellAutomata(int size, int neighborhood, String type, int infectivty,
                         int recovery, boolean forGA, ArrayList<int[]> list, boolean infected){
+        this.day = 0;
         this.size = size;
         this.neighborhood = neighborhood;
         this.cellArray = new Cell[size][size];
@@ -123,11 +126,10 @@ public class CellAutomata implements Runnable {
             }
 
             //update display
-            day++;
             if(forGA == false) {
                 display.update(cellArray, day);
                 try {
-                    Thread.sleep(200);
+                    Thread.sleep(20);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -146,8 +148,12 @@ public class CellAutomata implements Runnable {
                     }
                 }*/
             }
-            moveCells();
+            moveCells(); //move a select number of cells
+            infectedNumbers[day] = numberInfectedV1;
+            day++;
+
         }
+        System.out.print(infectedNumbers);
         /*if(forGA == false) {
             System.out.println("Complete, Final Results:");
             System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
@@ -328,6 +334,10 @@ public class CellAutomata implements Runnable {
             cellArray[x2][y2] = tempCell;
 
         }
+    }
+
+    public void graph(){
+
     }
 
 }
