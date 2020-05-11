@@ -329,9 +329,11 @@ public class CellAutomata implements Runnable {
             while(y2 > 199 || y2 < 0){
                 y2 = rand.nextInt(20) + (y1 - 10);
             }
-            Cell tempCell = cellArray[x1][y1];
-            cellArray[x1][y1] = cellArray[x2][y2];
-            cellArray[x2][y2] = tempCell;
+            if(cellArray[x1][y1].isolating == false && cellArray[x2][y2].isolating == false) {
+                Cell tempCell = cellArray[x1][y1];
+                cellArray[x1][y1] = cellArray[x2][y2];
+                cellArray[x2][y2] = tempCell;
+            }
 
         }
     }
