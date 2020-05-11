@@ -58,6 +58,7 @@ public class CellAutomata implements Runnable {
             int rowVal = rand.nextInt(size - 1);
             int colVal = rand.nextInt(size - 1);
             cellArray[rowVal][colVal].cellState = States.Infected;
+            numberInfectedV1++;
             //System.out.println("cell infected:" + cellArray[rowVal][colVal].ID);
         }
 
@@ -110,7 +111,7 @@ public class CellAutomata implements Runnable {
                         } else if(cellArray[i][j].cellState == States.Infected){ //progress infection of virus 1
                             cellArray[i][j].progressInfectionProbV1();
                             if(cellArray[i][j].nextState == States.Recovered)
-                                numberRecoveredV1++;
+                                numberRecoveredV1=numberRecoveredV1; //this shouldnt be here
                         } else if(cellArray[i][j].cellState == States.InfectedVirus2){
                             cellArray[i][j].progressInfectionProbV2(V2recovery); //progress infection of virus 2
                             if(cellArray[i][j].nextState == States.RecoveredVirus2)
@@ -145,15 +146,15 @@ public class CellAutomata implements Runnable {
                     }
                 }*/
             }
-            //moveCells();
+            moveCells();
         }
-        if(forGA == false) {
+        /*if(forGA == false) {
             System.out.println("Complete, Final Results:");
             System.out.printf("Cells Infected with Virus 1: %d\nCells Infected with Virus 2: %d\n" +
                             "Cells Recovered from Virus 1: %d\nCells Recovered from Virus 2: %d\n" +
                             "Difference is: %d\n", numberInfectedV1,
                     numberInfectedV2, numberRecoveredV1, numberRecoveredV2, Math.abs(numberRecoveredV1 - numberRecoveredV2));
-        }
+        }*/
         if(forGA){ //add results to results list for GA
             int[] results = {V2infectivity, V2recovery, Math.abs(numberRecoveredV1 - numberRecoveredV2)}; //returns data from sim to main for GA
             resultList.add(results);
@@ -302,10 +303,10 @@ public class CellAutomata implements Runnable {
                 }
             }
         }
-        if(newState == States.Infected)
+        /*if(newState == States.Infected)
             numberInfectedV1 = numberRecoveredV1;
         else if(newState == States.InfectedVirus2)
-            numberInfectedV2++;
+            numberInfectedV2++;*/
         return newState;
     }
 
@@ -328,4 +329,5 @@ public class CellAutomata implements Runnable {
 
         }
     }
+
 }

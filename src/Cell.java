@@ -81,7 +81,7 @@ public class Cell {
         //if not isolating already, maybe isolate
         if(!isolating) {
             int isolationProb = rand.nextInt(100) * daysInfected;
-            if (isolationProb > 1000) //TODO this is the probability
+            if (isolationProb > 25) //TODO this is the probability
                 isolating = true;
         }
 
@@ -98,6 +98,7 @@ public class Cell {
                 immuneV1 = true;
                 myAut.numberInfectedV1--;
                 isolating = false;
+                //System.out.println("cell recovered");
             } else daysInfected++;
         } else daysInfected++;
     }
