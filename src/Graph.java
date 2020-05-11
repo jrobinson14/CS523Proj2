@@ -7,12 +7,14 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class Graph extends ApplicationFrame {
+    int[] infectedNumbers;
 
-    public Graph( String applicationTitle , String chartTitle ) {
+    public Graph( String applicationTitle , String chartTitle, int[] data ) {
         super(applicationTitle);
+        this.infectedNumbers = data;
         JFreeChart lineChart = ChartFactory.createLineChart(
                 chartTitle,
-                "Years","Number of Schools",
+                "Day","Number of Infected",
                 createDataset(),
                 PlotOrientation.VERTICAL,
                 true,true,false);
@@ -24,22 +26,17 @@ public class Graph extends ApplicationFrame {
 
     private DefaultCategoryDataset createDataset( ) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset( );
-        dataset.addValue( 15 , "schools" , "1970" );
+        for(int i = 1; i < infectedNumbers.length; i++){
+            dataset.addValue(infectedNumbers[i], "infected", Integer.toString(i));
+        }
+        /*dataset.addValue( 15 , "schools" , "1970" );
         dataset.addValue( 30 , "schools" , "1980" );
         dataset.addValue( 60 , "schools" ,  "1990" );
         dataset.addValue( 120 , "schools" , "2000" );
         dataset.addValue( 240 , "schools" , "2010" );
-        dataset.addValue( 300 , "schools" , "2014" );
+        dataset.addValue( 300 , "schools" , "2014" );*/
         return dataset;
     }
 
-    public static void main( String[ ] args ) {
-        Graph chart = new Graph(
-                "School Vs Years" ,
-                "Numer of Schools vs years");
 
-        chart.pack( );
-        RefineryUtilities.centerFrameOnScreen( chart );
-        chart.setVisible( true );
-    }
 }

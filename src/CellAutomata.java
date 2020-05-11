@@ -1,3 +1,5 @@
+import org.jfree.ui.RefineryUtilities;
+
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
@@ -129,7 +131,7 @@ public class CellAutomata implements Runnable {
             if(forGA == false) {
                 display.update(cellArray, day);
                 try {
-                    Thread.sleep(200); //controls how fast sim runs
+                    Thread.sleep(20); //controls how fast sim runs
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -152,7 +154,6 @@ public class CellAutomata implements Runnable {
             moveCells(); //move a select number of cells
             infectedNumbers[day] = numberInfectedV1;
             day++;
-
         }
         System.out.print(infectedNumbers);
         /*if(forGA == false) {
@@ -166,6 +167,7 @@ public class CellAutomata implements Runnable {
             int[] results = {V2infectivity, V2recovery, Math.abs(numberRecoveredV1 - numberRecoveredV2)}; //returns data from sim to main for GA
             resultList.add(results);
         }
+        graphData();
         //System.exit(0);
     }
 
@@ -339,8 +341,15 @@ public class CellAutomata implements Runnable {
         }
     }
 
-    public void graph(){
+    public void graphData(){
+        Graph chart = new Graph(
+                "Simulation results" ,
+                "Number Infected Per Day", infectedNumbers);
 
+        chart.pack( );
+        RefineryUtilities.centerFrameOnScreen( chart );
+        chart.setVisible( true );
     }
+
 
 }
