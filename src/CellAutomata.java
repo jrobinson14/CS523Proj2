@@ -129,11 +129,12 @@ public class CellAutomata implements Runnable {
             if(forGA == false) {
                 display.update(cellArray, day);
                 try {
-                    Thread.sleep(20);
+                    Thread.sleep(200); //controls how fast sim runs
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
+                //enable this block to have the sim pause at certain times
                 /*if (day % 100 == 0) {
                     System.out.printf("Recovered from Virus 1: %d\nRecovered from Virus 2: %d\n", numberRecoveredV1, numberRecoveredV2);
 
